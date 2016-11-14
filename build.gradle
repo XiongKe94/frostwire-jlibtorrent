@@ -105,8 +105,8 @@ task nativeAndroidX64Jar(type: Zip) {
 }
 
 artifacts {
-    archives sourcesJar
-    archives javadocJar
+    //archives sourcesJar
+    //archives javadocJar
     archives nativeMacOSXJar
     archives nativeWindowsJar
     archives nativeLinuxJar
