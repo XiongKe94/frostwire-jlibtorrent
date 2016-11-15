@@ -3,24 +3,10 @@ language: cpp
 matrix:
   include:
     - env: os_build=android os_arch=arm android_api=16
-    - env: os_build=android os_arch=arm64 android_api=21
-    - env: os_build=android os_arch=x86 android_api=16
-    - env: os_build=android os_arch=x86_64 android_api=21
-    - env: os_build=linux os_arch=x86
-    - env: os_build=linux os_arch=x86_64
-    - env: os_build=linux os_arch=arm
-    - env: os_build=linux os_arch=arm64
-    - dist: trusty
-      env: os_build=windows os_arch=x86
-    - dist: trusty
-      env: os_build=windows os_arch=x86_64
-    - os: osx
-      osx_image: xcode7.3
-      env: os_build=macosx os_arch=x86_64
 
 branches:
   only:
-    - master
+    - debug_openSSL_master
 
 cache:
   directories:
@@ -49,9 +35,9 @@ before_install:
     fi
 
 # libtorrent: download and checkout revision
-  - git clone https://github.com/arvidn/libtorrent
+  - git clone https://github.com/tnextday/libtorrent
   - cd libtorrent
-  - git checkout 2b58cb9de30c633c2a94f2b6eb83ed9e5e019a8b
+  - git checkout 857a14f8e2045d30ea119220b98c36ac00f78785
   - cd ..
   - export LIBTORRENT_ROOT=$PWD/libtorrent
 
@@ -112,21 +98,11 @@ before_install:
   - if [ $os_build == "macosx" ]; then brew update > /dev/null && brew install --quiet gradle; fi
 
 # openssl
-  - 'export OPENSSL_NO_OPTS="no-afalgeng no-asan no-async no-autoalginit no-autoerrinit no-bf no-blake2
-        no-camellia no-capieng no-cast no-chacha no-cmac no-cms no-comp no-crypto-mdebug
-        no-crypto-mdebug-backtrace no-ct no-deprecated no-des no-dgram no-dh no-dsa no-dso
-        no-dtls no-dynamic-engine no-ec no-ec2m no-ecdh no-ecdsa no-ec_nistp_64_gcc_128 no-egd
-        no-engine no-err no-filenames no-fuzz-libfuzzer no-fuzz-afl no-gost no-heartbeats no-hw no-idea no-makedepend
-        no-md2 no-md4 no-mdc2 no-msan no-multiblock no-nextprotoneg no-ocb no-ocsp no-pic no-poly1305
-        no-posix-io no-psk no-rc2 no-rc4 no-rc5 no-rdrand no-rfc3779 no-rmd160
-        no-scrypt no-sctp no-seed no-shared no-sock no-srp no-srtp no-ssl
-        no-ssl-trace no-static-engine no-stdio no-threads no-tls no-ts no-ubsan no-ui no-unit-test
-        no-whirlpool no-weak-ssl-ciphers no-zlib no-zlib-dynamic
-        no-ssl3 no-tls1 no-tls1_1 no-tls1_2 no-dtls1 no-dtls1_2"'
+  - 'export OPENSSL_NO_OPTS="no-shared"'
   # android-arm
   - if [[ $os_build == "android" && $os_arch == "arm" ]]; then
       export CC=$ANDROID_TOOLCHAIN/bin/arm-linux-androideabi-clang;
-      export run_openssl_configure="./Configure linux-armv4 ${OPENSSL_NO_OPTS} -march=armv7-a -mfpu=neon -fPIC -fno-strict-aliasing --prefix=$OPENSSL_SOURCE/../openssl";
+      export run_openssl_configure="./Configure linux-armv4 ${OPENSSL_NO_OPTS} -march=armv7-a -mfpu=neon -fPIC -fno-strict-aliasing -fno-integrated-as --prefix=$OPENSSL_SOURCE/../openssl";
     fi
   # android-arm64
   - if [[ $os_build == "android" && $os_arch == "arm64" ]]; then
