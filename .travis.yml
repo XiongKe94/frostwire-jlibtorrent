@@ -19,11 +19,19 @@ before_install:
 script: gradle build
 
 deploy:
-  provider: s3
-  access_key_id: $S3_ACCESS_KEY
-  secret_access_key: $S3_SECRET_KEY
-  bucket: $S3_BUCKET
-  skip_cleanup: true
-  local_dir: build/libs
-  on:
-    all_branches: true
+  #provider: s3
+  #access_key_id: $S3_ACCESS_KEY
+  #secret_access_key: $S3_SECRET_KEY
+  #bucket: $S3_BUCKET
+  #skip_cleanup: true
+  #local_dir: build/libs
+  #on:
+   # all_branches: true
+  #github
+  #2d9fcefe68d77cf3b79a3ad7cd64810a9b33b56e
+
+  deploy:
+    provider: releases
+    api_key: 2d9fcefe68d77cf3b79a3ad7cd64810a9b33b56e
+    file: swig/bin/release/android/armeabi-v7a/jlibtorrent-android-arm-1.2.0.4.jar
+    skip_cleanup: true
