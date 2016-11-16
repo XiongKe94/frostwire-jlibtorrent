@@ -1,12 +1,12 @@
 language: cpp,android
 
-matrix:  
+matrix:
   include:
     - env: os_build=android os_arch=arm android_api=16
 
 branches:
   only:
-    - debug_openSSL_master
+    - release_openSSL_master
 
 cache:
   directories:
@@ -35,9 +35,9 @@ before_install:
     fi
 
 # libtorrent: download and checkout revision
-  - git clone https://github.com/tnextday/libtorrent
+  - git clone https://github.com/arvidn/libtorrent
   - cd libtorrent
-  - git checkout 857a14f8e2045d30ea119220b98c36ac00f78785
+  - git checkout 2b58cb9de30c633c2a94f2b6eb83ed9e5e019a8b
   - cd ..
   - export LIBTORRENT_ROOT=$PWD/libtorrent
 
@@ -243,6 +243,9 @@ script:
     fi
   - if [[ $os_build == "windows" && $os_arch == "x86_64" ]]; then
       mv bin/release/windows/x86_64/libjlibtorrent.dll bin/release/windows/x86_64/jlibtorrent.dll;
+    fi
+  - if [[ $os_build == "android" && $os_arch == "arm" && $android_api == "16" ]]; then
+     gradle build
     fi
   - $run_readelf
   - cd ..
