@@ -36,4 +36,4 @@ deploy:
     file: swig/bin/release/android/armeabi-v7a/jlibtorrent-android-arm-1.2.0.4.jar
     skip_cleanup: true
     on:
-        tags: true
+        tags: false
