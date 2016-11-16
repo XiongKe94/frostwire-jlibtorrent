@@ -6,7 +6,7 @@ matrix:
 
 branches:
   only:
-    - release_openSSL_master
+    - debug_openSSL_master
 
 cache:
   directories:
