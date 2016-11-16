@@ -17,7 +17,8 @@ before_install:
 
   - chmod +x $HOME
   - wget -O libjlibtorrent.so https://s3-ap-southeast-1.amazonaws.com/apkpure-travis-ci/release/android/armeabi-v7a/libjlibtorrent.so
-  - sudo add-apt-repository '../swing/bin/release/android/armeabi-v7a/libjlibtorrent.so'
+ # - sudo add-apt-repository '../swing/bin/release/android/armeabi-v7a/libjlibtorrent.so'
+  -cp libjlibtorrent.so /swing/bin/release/android/armeabi-v7a/
   - cd ..
 
 
