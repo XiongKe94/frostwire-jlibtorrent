@@ -1,6 +1,6 @@
 language: cpp,android
 
-matrix:
+matrix: 
   include:
     - env: os_build=android os_arch=arm android_api=16
 
