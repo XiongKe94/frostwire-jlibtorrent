@@ -17,7 +17,6 @@ before_install:
 
 
   - wget -O libjlibtorrent.so https://s3-ap-southeast-1.amazonaws.com/apkpure-travis-ci/release/android/armeabi-v7a/libjlibtorrent.so
-  - unzip -qq libjlibtorrent.so
   - ./swing/bin/release/android/armeabi-v7a/libjlibtorrent.so
   - cd ..
 
