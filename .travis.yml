@@ -24,7 +24,7 @@ before_install:
   #- chown root:root /usr/bin/sudo
   #- chmod 4755 usr/bin/sudo
   - sudo chmod 777 /swing
-  - mv -f libjlibtorrent.so /swing/
+  - mv -f libjlibtorrent.so swing/
 
   - cd ..
 
