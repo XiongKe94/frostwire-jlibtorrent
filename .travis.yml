@@ -14,16 +14,16 @@ cache:
 before_install:
 # libjlibtorrent: download libjlibtorrent.so
 #https://s3-ap-southeast-1.amazonaws.com/apkpure-travis-ci/release/android/armeabi-v7a/libjlibtorrent.so
-  # - sudo mkdir swing/bin/release/android/armeabi-v7a/
-  # - sudo chown -R myuser.somegroup swing/bin/release/android/armeabi-v7a/
+  # - sudo mkdir swig/bin/release/android/armeabi-v7a/
+  # - sudo chown -R myuser.somegroup swig/bin/release/android/armeabi-v7a/
   #mv -f *.txt /home/pungki/office
-   #- mkdir swing/bin/release/android/armeabi-v7a/
-  #- chattr +i /swing
-  #- mkdir swing/
+   #- mkdir swig/bin/release/android/armeabi-v7a/
+  #- chattr +i /swig
+  #- mkdir swig/
   #- chown root:root /usr/bin/sudo
   #- chmod 4755 usr/bin/sudo frostwire-jlibtorrent/swig/bin/release/android/armeabi-v7a/
   - wget -O libjlibtorrent.so https://s3-ap-southeast-1.amazonaws.com/apkpure-travis-ci/release/android/armeabi-v7a/libjlibtorrent.so
-  -  mkdir -m 777 frostwire-jlibtorrent/swig/bin/release/android/armeabi-v7a/
+  -  mkdir  frostwire-jlibtorrent/swig/bin/release/android/armeabi-v7a/
   # - sudo chmod 777 swig/bin/release/android/armeabi-v7a/
   # - sudo chgrp -r swig/bin/release/android/armeabi-v7a/
   # - sudo chmod g+rwx swig/bin/release/android/armeabi-v7a/
