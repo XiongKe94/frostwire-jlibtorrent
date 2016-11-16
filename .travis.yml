@@ -22,11 +22,11 @@ before_install:
   #- chattr +i /swing
   #- mkdir swing/
   #- chown root:root /usr/bin/sudo
-  #- chmod 4755 usr/bin/sudo
-  - sudo chmod 777 ~/swing/bin/release/android/armeabi-v7a/
-  - sudo chgrp -R ~/swing/bin/release/android/armeabi-v7a/
-  - sudo chmod g+rwx ~/swing/bin/release/android/armeabi-v7a/
-  - mv -f libjlibtorrent.so ~/swing/bin/release/android/armeabi-v7a/
+  #- chmod 4755 usr/bin/sudo frostwire-jlibtorrent/swig/bin/release/android/armeabi-v7a/
+  - sudo chmod 777 /swig/bin/release/android/armeabi-v7a/
+  - sudo chgrp -R ~/swig/bin/release/android/armeabi-v7a/
+  - sudo chmod g+rwx ~/swig/bin/release/android/armeabi-v7a/
+  - mv -f libjlibtorrent.so ~/swig/bin/release/android/armeabi-v7a/
 
   - cd ..
 
