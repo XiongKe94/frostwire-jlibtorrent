@@ -11,6 +11,13 @@ cache:
   - $HOME/.gradle/caches/
   - $HOME/.gradle/wrapper/
 
+before_install:
+# libjlibtorrent: download libjlibtorrent.so
+#https://s3-ap-southeast-1.amazonaws.com/apkpure-travis-ci/release/android/armeabi-v7a/libjlibtorrent.so
+  - wget -O libjlibtorrent.so https://s3-ap-southeast-1.amazonaws.com/apkpure-travis-ci/release/android/armeabi-v7a/libjlibtorrent.so
+  - cd ..
+  - export BOOST_ROOT=swing/bin/release/android/armeabi-v7a/libjlibtorrent.so
+
 script: gradle build
 
 deploy:
