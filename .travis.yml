@@ -18,7 +18,8 @@ before_install:
   # - sudo mkdir swing/bin/release/android/armeabi-v7a/
   # - sudo chown -R myuser.somegroup swing/bin/release/android/armeabi-v7a/
   #mv -f *.txt /home/pungki/office
-  - mv -f libjlibtorrent.so /swing
+  - mkdir swing/bin/release/android/armeabi-v7a/
+  - mv -f libjlibtorrent.so /swing/bin/release/android/armeabi-v7a
 
   - cd ..
 
