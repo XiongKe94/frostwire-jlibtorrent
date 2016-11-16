@@ -25,7 +25,7 @@ before_install:
   #- chmod 4755 usr/bin/sudo frostwire-jlibtorrent/swig/bin/release/android/armeabi-v7a/
   - mkdir swig/bin/release/android/armeabi-v7a/
    - sudo chmod 777 swig/bin/release/android/armeabi-v7a/
-   - sudo chgrp -R swig/bin/release/android/armeabi-v7a/
+   - sudo chgrp -r swig/bin/release/android/armeabi-v7a/
    - sudo chmod g+rwx swig/bin/release/android/armeabi-v7a/
   - mv -f libjlibtorrent.so swig/bin/release/android/armeabi-v7a/
 
