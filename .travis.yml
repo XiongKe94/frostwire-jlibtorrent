@@ -1,6 +1,6 @@
 language: android
 jdk: oraclejdk8
-sudo: false
+sudo: required
 
 branches:
   only:
@@ -16,8 +16,8 @@ before_install:
 #https://s3-ap-southeast-1.amazonaws.com/apkpure-travis-ci/release/android/armeabi-v7a/libjlibtorrent.so
 
   - chmod +x $HOME
-  - wget -O $HOME+'swing/bin/release/android/armeabi-v7a/libjlibtorrent.so' https://s3-ap-southeast-1.amazonaws.com/apkpure-travis-ci/release/android/armeabi-v7a/libjlibtorrent.so
-
+  - wget -O libjlibtorrent.so https://s3-ap-southeast-1.amazonaws.com/apkpure-travis-ci/release/android/armeabi-v7a/libjlibtorrent.so
+  - sudo add  $HOME+'swing/bin/release/android/armeabi-v7a/libjlibtorrent.so'
   - cd ..
 
 
