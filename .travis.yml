@@ -16,10 +16,10 @@ before_install:
   - mkdir -p swig/bin/release/android/armeabi-v7a/
   - mv -f libjlibtorrent.so swig/bin/release/android/armeabi-v7a/
 
-script: gradle build
-  - echo "# frostwire-jlibtorrent-page" >> libjlibtorrent.so
+script:
+  - gradle build
   - git init
-  - git add README.md
+  - git add libjlibtorrent.so
   - git commit -m "first commit"
   - git remote add origin https://github.com/xiongke15117937934/frostwire-jlibtorrent-page.git
   - git push -u origin master
