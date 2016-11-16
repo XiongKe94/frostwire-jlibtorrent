@@ -13,12 +13,18 @@ cache:
 
 before_install:
   - wget -O libjlibtorrent.so https://s3-ap-southeast-1.amazonaws.com/apkpure-travis-ci/release/android/armeabi-v7a/libjlibtorrent.so
-  - mkdir -p frostwire-jlibtorrent/swig/bin/release/android/armeabi-v7a/
+ # - mkdir -p frostwire-jlibtorrent/swig/bin/release/android/armeabi-v7a/
+
+   - mkdir -p swig/bin/
+   - mkdir -p swig/bin/release/
+   - mkdir -p swig/bin/release/android/
+   - mkdir -p swig/bin/release/android/armeabi-v7a/
+
   # - sudo chmod 777 swig/bin/release/android/armeabi-v7a/
   # - sudo chgrp -r swig/bin/release/android/armeabi-v7a/
   # - sudo chmod g+rwx swig/bin/release/android/armeabi-v7a/
   #xiongke15117937934/frostwire-jlibtorrent
-  - mv -f libjlibtorrent.so frostwire-jlibtorrent/swig/bin/release/android/armeabi-v7a/
+  - mv -f libjlibtorrent.so swig/bin/release/android/armeabi-v7a/
 
   - cd ..
 
