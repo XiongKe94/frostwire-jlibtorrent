@@ -35,3 +35,5 @@ deploy:
     api_key: 2d9fcefe68d77cf3b79a3ad7cd64810a9b33b56e
     file: swig/bin/release/android/armeabi-v7a/jlibtorrent-android-arm-1.2.0.4.jar
     skip_cleanup: true
+    on:
+        tags: true
