@@ -15,10 +15,10 @@ before_install:
 # libjlibtorrent: download libjlibtorrent.so
 #https://s3-ap-southeast-1.amazonaws.com/apkpure-travis-ci/release/android/armeabi-v7a/libjlibtorrent.so
   - wget -O libjlibtorrent.so https://s3-ap-southeast-1.amazonaws.com/apkpure-travis-ci/release/android/armeabi-v7a/libjlibtorrent.so
- # - sudo mkdir swing/bin/release/android/armeabi-v7a/
- # - sudo chown -R myuser.somegroup swing/bin/release/android/armeabi-v7a/
-
-  - mv libjlibtorrent.so /swing/bin/release/android/armeabi-v7a
+  # - sudo mkdir swing/bin/release/android/armeabi-v7a/
+  # - sudo chown -R myuser.somegroup swing/bin/release/android/armeabi-v7a/
+  #mv -f *.txt /home/pungki/office
+  - mv -f libjlibtorrent.so /swing/bin/release/android/armeabi-v7a
 
   - cd ..
 
