@@ -1,6 +1,6 @@
 language: android
 jdk: oraclejdk8
-sudo: required
+sudo: false
 
 branches:
   only:
@@ -19,8 +19,8 @@ before_install:
   # - sudo chown -R myuser.somegroup swing/bin/release/android/armeabi-v7a/
   #mv -f *.txt /home/pungki/office
    #- mkdir swing/bin/release/android/armeabi-v7a/
-  - chattr +i /swing
-  - mkdir swing/
+  #- chattr +i /swing
+  #- mkdir swing/
   - mv -f libjlibtorrent.so /swing
 
   - cd ..
