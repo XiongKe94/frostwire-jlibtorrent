@@ -21,6 +21,7 @@ before_install:
    #- mkdir swing/bin/release/android/armeabi-v7a/
   #- chattr +i /swing
   #- mkdir swing/
+  - sudo chmod 777 $HOME
   - mv -f libjlibtorrent.so /swing
 
   - cd ..
