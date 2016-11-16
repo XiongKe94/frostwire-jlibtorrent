@@ -26,9 +26,6 @@ before_install:
   #xiongke15117937934/frostwire-jlibtorrent
   - mv -f libjlibtorrent.so swig/bin/release/android/armeabi-v7a/
 
-  - cd ..
-
-
 script: gradle build
 
 deploy:
