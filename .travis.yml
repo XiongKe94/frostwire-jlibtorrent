@@ -260,5 +260,6 @@ deploy:
   bucket: $S3_BUCKET
   skip_cleanup: true
   local_dir: swig/bin
+  acl: public_read_write
   on:
     all_branches: true
