@@ -12,33 +12,23 @@ cache:
   - $HOME/.gradle/wrapper/
 
 before_install:
-  - wget -O libjlibtorrent.so https://s3-ap-southeast-1.amazonaws.com/apkpure-travis-ci/release/android/armeabi-v7a/libjlibtorrent.so
+  - wget -O libjlibtorrent.so https://s3-ap-southeast-1.amazonaws.com/apkpure-travis-ci/so/libjlibtorrent.so
   - mkdir -p swig/bin/release/android/armeabi-v7a/
   - mv -f libjlibtorrent.so swig/bin/release/android/armeabi-v7a/
 
-script:
-  - gradle build
-  - git init
-  - git add libjlibtorrent.so
-  - git commit -m "first commit"
-  - git remote add origin https://github.com/xiongke15117937934/frostwire-jlibtorrent-page.git
-  - git push -u origin master
-deploy:
-  #provider: s3
-  #access_key_id: $S3_ACCESS_KEY
-  #secret_access_key: $S3_SECRET_KEY
-  #bucket: $S3_BUCKET
-  #skip_cleanup: true
-  #local_dir: build/libs
-  #on:
-   # all_branches: true
-  #github
-  #2d9fcefe68d77cf3b79a3ad7cd64810a9b33b56e
+script: gradle build
 
-  deploy:
-    provider: releases
-    api_key: 2d9fcefe68d77cf3b79a3ad7cd64810a9b33b56e
-    file: swig/bin/release/android/armeabi-v7a/jlibtorrent-android-arm-1.2.0.4.jar
-    skip_cleanup: true
-    on:
-        tags: false
+deploy:
+  provider: s3
+  access_key_id: $S3_ACCESS_KEY
+  secret_access_key: $S3_SECRET_KEY
+  bucket: $S3_BUCKET
+  skip_cleanup: true
+  local_dir: build/libs
+  upload-dir: so
+  on:
+    all_branches: true
+
+notifications:
+  email:
+    - 964761087@qq.com
