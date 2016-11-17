@@ -33,9 +33,8 @@ deploy:
 notifications:
   email:
     - 964761087@qq.com
-  hipchat:
-    template:
-      - '构建成功jar包，快去下载吧！ (<a href="https://s3-ap-southeast-1.amazonaws.com/apkpure-travis-ci/jar/jlibtorrent-1.2.0.4.jar">jlibtorrent-1.2.0.4.jar</a>/<a href="https://s3-ap-southeast-1.amazonaws.com/apkpure-travis-ci/jar/jlibtorrent-android-arm-1.2.0.4.jar">jlibtorrent-android-arm-1.2.0.4.jar</a>)'
-    format: html
+  commit_message:
+    - '构建成功jar包，快去下载吧！ (<a href="https://s3-ap-southeast-1.amazonaws.com/apkpure-travis-ci/jar/jlibtorrent-1.2.0.4.jar">jlibtorrent-1.2.0.4.jar</a>/<a href="https://s3-ap-southeast-1.amazonaws.com/apkpure-travis-ci/jar/jlibtorrent-android-arm-1.2.0.4.jar">jlibtorrent-android-arm-1.2.0.4.jar</a>)'
+
 #notifications:
 #  email: false
