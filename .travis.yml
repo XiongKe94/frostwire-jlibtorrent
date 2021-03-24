@@ -254,8 +254,4 @@ deploy:
   secret_access_key: $APKPURE_S3_SECRET_KEY
   bucket: $APKPURE_S3_BUCKET
   skip_cleanup: true
-  local_dir: build/libs
-  upload-dir: jar
-  acl: public_read
-  on:
-    all_branches: true
+  local_dir: swig/bin
