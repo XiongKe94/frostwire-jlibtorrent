@@ -1,100 +1,90 @@
 language: cpp
+dist: eoan
 
 matrix:
   include:
-    - env: os_build=android os_arch=arm android_api=16
+    - env: os_build=android os_arch=arm android_api=19
     - env: os_build=android os_arch=arm64 android_api=21
-    - env: os_build=android os_arch=x86 android_api=16
-    - env: os_build=android os_arch=x86_64 android_api=21
-    - env: os_build=linux os_arch=x86
-    - env: os_build=linux os_arch=x86_64
-    - dist: trusty
-      env: os_build=windows os_arch=x86
-    - dist: trusty
-      env: os_build=windows os_arch=x86_64
-    - os: osx
-      osx_image: xcode7.3
-      env: os_build=macosx os_arch=x86_64
+    - env: os_build=android os_arch=x86 android_api=19
+  #  - env: os_build=android os_arch=x86_64 android_api=21
+  #  - env: os_build=linux os_arch=x86
+  #  - env: os_build=linux os_arch=x86_64
+  #  - env: os_build=windows os_arch=x86
+  #  - env: os_build=windows os_arch=x86_64
+  #  - os: osx
+  #    env: os_build=macosx os_arch=x86_64
+  #    osx_image: xcode11.2
 
 branches:
   only:
-    - master
+    - 1.2.11.0-server-multiple-request
 
 before_install:
-  # boost: download and bootstrap
-  - wget -nv -O boost.zip https://dl.bintray.com/boostorg/release/1.67.0/source/boost_1_67_0.zip
+  - wget -nv -O boost.zip https://dl.bintray.com/boostorg/release/1.73.0/source/boost_1_73_0.zip
   - unzip -qq boost.zip
-  - cd boost_1_67_0
+  - cd boost_1_73_0
+  - ls -lth
   - ./bootstrap.sh
+  - ./b2
   - cd ..
-  - export BOOST_ROOT=$PWD/boost_1_67_0
+  - export BOOST_ROOT=$PWD/boost_1_73_0
+  - export BOOST_BUILD_PATH=$BOOST_ROOT
 
   # openssl: download
-  - wget -nv -O openssl.tar.gz https://www.openssl.org/source/openssl-1.1.1-pre7.tar.gz
+  - wget -nv -O openssl.tar.gz https://www.openssl.org/source/openssl-1.1.1i.tar.gz
   - tar xzf openssl.tar.gz
-  - export OPENSSL_SOURCE=$PWD/openssl-1.1.1-pre7
+  - export OPENSSL_SOURCE=$PWD/openssl-1.1.1i
   # fix source code
-  # this one avoid the use of assembler for SHA3 to fix relocation issues
-  - if [[ $os_build == "linux" && $os_arch == "x86_64" ]]; then
-    sed -i 's/keccak1600-x86_64\.s/keccak1600\.c/g' $OPENSSL_SOURCE/Configurations/00-base-templates.conf;
-    fi
-  # this one avoid GDI dependency in windows
+  # avoid GDI dependency in windows, fix double return statement on threads_none.c
   - if [ $os_build == "windows" ]; then
     sed -i 's/if defined(_WIN32_WINNT) && _WIN32_WINNT>=0x0333/if 0/g' $OPENSSL_SOURCE/crypto/cryptlib.c;
     sed -i 's/MessageBox.*//g' $OPENSSL_SOURCE/crypto/cryptlib.c;
+    sed -i 's/return return 0;/return 0;/g' $OPENSSL_SOURCE/crypto/threads_none.c;
     fi
 
   # libtorrent: download and checkout revision
   - git clone https://github.com/arvidn/libtorrent
   - cd libtorrent
-  - git checkout 5530793c75421096ee832880096de4997fe55085
+  - git checkout e3f2b016dcd37a9a6e8a94006c7befcf2cb7bfac
+  - git submodule init
+  - git submodule update
   - cd ..
   - export LIBTORRENT_ROOT=$PWD/libtorrent
 
   # android ndk: download and create toolchain
   - if [ $os_build == "android" ]; then
-    wget -nv -O android-ndk.zip https://dl.google.com/android/repository/android-ndk-r17-linux-x86_64.zip;
+    wget -nv -O android-ndk.zip https://dl.google.com/android/repository/android-ndk-r21d-linux-x86_64.zip;
     echo "Extracting NDK...wait";
     unzip -qq android-ndk.zip;
-    export NDK=$PWD/android-ndk-r17;
+    export NDK=$PWD/android-ndk-r21d;
     $NDK/build/tools/make_standalone_toolchain.py --arch $os_arch --api $android_api --stl libc++ --install-dir android-toolchain;
     export ANDROID_TOOLCHAIN=$PWD/android-toolchain;
     fi
-  - if [[ $os_build == "android" && $android_api == "16" ]]; then
-    sed -i 's/using ::fgetpos;//g' $PWD/android-toolchain/include/c++/4.9.x/cstdio;
-    sed -i 's/using ::fsetpos;//g' $PWD/android-toolchain/include/c++/4.9.x/cstdio;
-    fi
 
   - if [[ $os_build == "linux" || $os_build == "windows" ]]; then
-    sudo add-apt-repository ppa:ubuntu-toolchain-r/test -y;
-    sudo apt-get update -qq;
-    sudo apt-get install -qq g++-5;
+    sudo apt-get install -qq g++-7 g++-7-multilib;
     fi
 
   - if [[ $os_build == "linux" && $os_arch == "x86" ]]; then
-    sudo add-apt-repository http://archive.ubuntu.com/ubuntu/ -y;
-    sudo apt-get update -qq;
     sudo apt-get install -qq libc6-dev-i386;
     sudo apt-get install -qq lib32gcc-5-dev;
     sudo apt-get install -qq lib32stdc++-5-dev;
+    sudo ln -s /usr/include/asm-generic /usr/include/asm;
     fi
 
   # linux cross compilation tools for windows development
   # remove files related to libwinpthread dll
-  - if [[ $os_build == "windows" ]]; then
-    sudo apt-get install -qq mingw-w64;
-    sudo add-apt-repository ppa:adrozdoff/mingw -y;
-    sudo apt-get update -qq;
-    sudo apt-get install -qq gcc-5-mingw-w64 g++-5-mingw-w64;
-    sudo rm /usr/i686-w64-mingw32/lib/libwinpthread.dll.a;
-    sudo rm /usr/i686-w64-mingw32/lib/libwinpthread-1.dll;
-    sudo rm /usr/x86_64-w64-mingw32/lib/libwinpthread.dll.a;
-    sudo rm /usr/x86_64-w64-mingw32/lib/libwinpthread-1.dll;
+  - if [[ $os_build == "windows" && $os_arch == "x86" ]]; then
+    sudo apt-get install -qq g++-mingw-w64-i686;
+    fi
+
+  - if [[ $os_build == "windows" && $os_arch == "x86_64" ]]; then
+    sudo apt-get install -qq g++-mingw-w64-x86-64;
     fi
 
   # install gradle in macOS to run the unit tests
   - if [ $os_build == "macosx" ]; then
-    brew update > /dev/null && brew install --quiet gradle;
+    brew update > /dev/null && brew install gradle;
     fi
 
   # openssl
@@ -127,22 +117,22 @@ before_install:
     fi
   # linux-x86
   - if [[ $os_build == "linux" && $os_arch == "x86" ]]; then
-    export CC=gcc-5;
+    export CC=gcc-7;
     export run_openssl_configure="./Configure linux-elf ${OPENSSL_NO_OPTS} -fPIC -m32 --prefix=$OPENSSL_SOURCE/../openssl";
     fi
   # linux-x86_64
   - if [[ $os_build == "linux" && $os_arch == "x86_64" ]]; then
-    export CC=gcc-5;
+    export CC=gcc-7;
     export run_openssl_configure="./Configure linux-x86_64 ${OPENSSL_NO_OPTS} -fPIC --prefix=$OPENSSL_SOURCE/../openssl";
     fi
   # windows-x86
   - if [[ $os_build == "windows" && $os_arch == "x86" ]]; then
-    export CC=i686-w64-mingw32-gcc-5;
+    export CC=i686-w64-mingw32-gcc-posix;
     export run_openssl_configure="./Configure mingw ${OPENSSL_NO_OPTS} --prefix=$OPENSSL_SOURCE/../openssl";
     fi
   # windows-x86_64
   - if [[ $os_build == "windows" && $os_arch == "x86_64" ]]; then
-    export CC=x86_64-w64-mingw32-gcc-5;
+    export CC=x86_64-w64-mingw32-gcc-posix;
     export run_openssl_configure="./Configure mingw64 ${OPENSSL_NO_OPTS} --prefix=$OPENSSL_SOURCE/../openssl";
     fi
   # macosx
@@ -226,8 +216,8 @@ script:
   - cd $OPENSSL_SOURCE
   - $run_openssl_configure
   - echo "Compiling openssl...(remove &> /dev/null to see output)"
-  - make &> /dev/null
-  - make install &> /dev/null
+  - make #&> /dev/null
+  - make install_sw &> /dev/null
   - cd ..
   - export OPENSSL_ROOT=$PWD/openssl
 
@@ -251,17 +241,21 @@ script:
   - cd ..
 
 before_deploy:
-  - cd swig/bin
-  - find . -type f | egrep -v '.*\.so$|.*\.dll$|.*\.dylib$|.*\.debug$' | xargs rm
-  - find . -empty -type d | xargs rm -r
+  - if [ -d swig/bin ]; then
+    cd swig/bin;
+    find . -type f | egrep -v '.*\.so$|.*\.dll$|.*\.dylib$|.*\.debug$' | xargs rm;
+    find . -empty -type d | xargs rm -r;
+    fi
   - cd ../..
 
 deploy:
   provider: s3
-  access_key_id: $S3_ACCESS_KEY
-  secret_access_key: $S3_SECRET_KEY
-  bucket: $S3_BUCKET
+  access_key_id: $APKPURE_S3_ACCESS_KEY
+  secret_access_key: $APKPURE_S3_SECRET_KEY
+  bucket: $APKPURE_S3_BUCKET
   skip_cleanup: true
-  local_dir: swig/bin
+  local_dir: build/libs
+  upload-dir: jar
+  acl: public_read
   on:
     all_branches: true
